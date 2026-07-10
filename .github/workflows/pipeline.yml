@@ -29,24 +29,17 @@ jobs:
           ls src/
           echo "Build OK!"
 
-      # ❌ PASSO 3: IMPLEMENTE AQUI — Secrets Scanning com Gitleaks
-      # Dica: use a action oficial "gitleaks/gitleaks-action@v2"
+      # ✅ PASSO 3: Secrets Scanning com Gitleaks
       - name: 🔑 Secrets Scanning
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # SUBSTITUA o run acima pela implementação correta com "uses:"
 
-      # ❌ PASSO 4: IMPLEMENTE AQUI — SAST com Semgrep
-      # Dica: instale com "pip install semgrep" e rode "semgrep scan --config auto --error src/"
+      # ✅ PASSO 4: SAST com Semgrep
       - name: 🔍 SAST - Semgrep
         run: pip install semgrep && semgrep scan --config auto --error src/
-        #run: echo "TODO - implemente o SAST com Semgrep aqui"
-        # SUBSTITUA pelo comando real: pip install semgrep && semgrep scan --config auto --error src/
 
-      # ❌ PASSO 5: IMPLEMENTE AQUI — SCA com Grype
-      # Dica: instale com "curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin"
-      # e rode "grype dir:. --fail-on medium"
+      # ✅ PASSO 5: SCA com Grype
       - name: 📦 SCA - Trivy
         uses: aquasecurity/trivy-action@master
         with:
@@ -54,8 +47,6 @@ jobs:
           scan-ref: '.'
           severity: 'HIGH,CRITICAL'
           exit-code: '1'
-        #run: echo "TODO - implemente o SCA com Grype aqui"
-        # SUBSTITUA pelo comando real de instalação + execução do Grype
 
       # ✅ PASSO 6: Já está pronto — Deploy (só roda se tudo passar)
       - name: 🌐 Configurar GitHub Pages
