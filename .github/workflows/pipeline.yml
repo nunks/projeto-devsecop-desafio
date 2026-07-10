@@ -37,7 +37,7 @@ jobs:
 
       # ✅ PASSO 4: SAST com Semgrep
       - name: 🔍 SAST - Semgrep
-        run: pip install semgrep && semgrep scan --config auto --error src/
+        run: pip install semgrep && semgrep scan --config auto --error --output=semgrep-results.sarif --sarif src/
 
       # ✅ PASSO 5: SCA com Grype
       - name: 📦 SCA - Trivy
