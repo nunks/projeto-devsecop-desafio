@@ -38,6 +38,11 @@ jobs:
       # ✅ PASSO 4: SAST com Semgrep
       - name: 🔍 SAST - Semgrep
         run: pip install semgrep && semgrep scan --config auto --error --output=semgrep-results.sarif --sarif src/
+      
+      - name: Envia o resultado .SARIF para a aba de segurança do github
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep-results.sarif
 
       # ✅ PASSO 5: SCA com Grype
       - name: 📦 SCA - Trivy
