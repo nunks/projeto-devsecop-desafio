@@ -8,6 +8,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  security-events: write #pra poder salvar o output do semgrep
 
 jobs:
   pipeline:
