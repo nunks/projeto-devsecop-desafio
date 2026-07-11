@@ -22,8 +22,20 @@ A pipeline está **incompleta**. Os steps de segurança precisam ser implementad
 - [ ] Deploy com **GitHub Pages**
 
 ## Como a pipeline funciona
-> **Substitua este bloco pela sua explicação após implementar a pipeline.**
-> Descreva cada step, o que ele faz e por que ele é importante para a segurança.
+
+A *pipeline* é composta por 6 passos, alguns dos quais realizam checagens em busca de erros e vulnerabilidades que possam afetar a segurança da aplicação, interrompendo sua publicação em caso de falha. Segue abaixo detalhamento dos passos:
+
+1. **Checkout do código:** Obtém o repositório de código para trabalho
+
+2. **Build:** Realiza o *build* da aplicação. Neste caso já se encontra feito, então so verifica.
+
+3. **Secrets Scanning:** Utiliza a ferramenta Gitleaks para vericar se não há segredos como senhas ou chaves de API expostos no código, algo que poderia ser explorado por um visitante utilizando a ferramenta de inspeção de código do navegador ou mesmo o próprio repositório do GitHub. Caso encontre algo errado, o passo falha para que a *pipeline* não coloque no ar uma aplicação vulnerável e com segredos expostos. O relatorio gerado por este passo pode ser consultado na execução do *GitHub Actions* do projeto no GitHub.
+
+4. **SAST - Semgrep:** Utiliza a ferramenta *Semgrep* para realizar a análise estática do código em busca de vulnerabilidades conhecidas, oriundas de más práticas de desenvolvimento. Caso encontre algo errado, o passo falha para que a *pipeline* não coloque no ar uma aplicação vulnerável. O relatório deste passo é enviado para a aba *Segurança de Qualidade* do projeto no GitHub.
+
+5. **SCA - Trivy:** Utiliza a ferramenta *Trivy* para realizar a análise de cadeia de suprimentos de *software*, procurando por bibliotecas ou outros componentes de software com alguma vulnerabilidade conhecida, o que por consequencia torna vulnerável a aplicação que os utiliza. Caso encontre algo errado com grau de critidade *HIGH* ou *CRITICAL*, o passo falha para que a *pipeline* não coloque no ar uma aplicação vulnerável.
+
+6. **Configurar GitHub Pages:** Publica no *GitHub Pages* o resultado do *build* do projeto, caso tenha passado pelas validações dos passos 3 a 5, tornando-o a aplicação acessível através da internet.
 
 ## URL de Produção
-> Adicione aqui o link do GitHub Pages após o deploy.
+https://nunks.github.io/projeto-devsecop-desafio/
