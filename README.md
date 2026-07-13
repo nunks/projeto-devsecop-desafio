@@ -37,5 +37,15 @@ A *pipeline* é composta por 6 passos, alguns dos quais realizam checagens em bu
 
 6. **Configurar GitHub Pages:** Publica no *GitHub Pages* o resultado do *build* do projeto, caso tenha passado pelas validações dos passos 3 a 5, tornando-o a aplicação acessível através da internet.
 
+### Questões identificados que não foram apontadas pelas ferramentas no pipeline.
+
+* Em `src/script.js` o Gitleaks identificou vazamento de API key, mas não de senha do banco de dados. É possível configurar o a ferramenta para acusar trechos de código com a palavra "password", mas isso pode gerar falsos positivos.
+
+* É importante frisar que o melhor momento para identificar o vazamento de credenciais é antes do commit. No presente caso, as credenciais já foram "eternizadas" no repositório git antes mesmo da execução da ferramenta.
+
+* Em `src/script.js` o uso de `innerHTML` torna a página vulnerável a XSS, uma vez que possui comportamento análogo ao uso de `eval()`, executando como código o input do usuário. É recomendado o uso de `innerText`, `textContent` ou `insertAdjacentText()`. A ferramenta Semgrep identificou corretamente o uso de `eval()`, mas não o de `innerHTML`, pois o processo de taint analysis não é capaz de identificar que a `constant input` se refere a entrada de usuário. É possível configurar a ferramenta para buscar padõres específicos de código configurando o `semgrep-rules.yaml`.
+
+* Os componentes nas versões listadas do `package.json` são antigos e contêm vulnerabilidades conhecidas. A ferramenta de SCA não os acusou pois não foi realizado um build real com npm install, e portanto não há arquivo `package-lock.json` ("SBOM") no pacote analisado.
+
 ## URL de Produção
 https://nunks.github.io/projeto-devsecop-desafio/
